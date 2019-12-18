@@ -18,7 +18,7 @@ export default function App() {
         <div className="cell"> Header 5 </div>
       </div>
       <div className="separator">
-        The body & header of table have their scroll position in sync.
+        The body & header of the table have their scroll position in sync.
       </div>
       <div ref={bodyRef} className="table-body">
           <div className="cell"> Cell 1 </div>
