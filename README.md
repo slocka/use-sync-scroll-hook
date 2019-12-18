@@ -9,20 +9,34 @@
 ```bash
 npm install --save use-sync-scroll-hook
 ```
+or
+```bash
+yarn add use-sync-scroll-hook
+```
 
 ## Usage
 
 ```jsx
-import React, { Component } from 'react'
+import React, { useRef } from 'react'
 
-import MyComponent from 'use-sync-scroll-hook'
+import useSyncScroll from 'use-sync-scroll-hook'
 
-class Example extends Component {
-  render () {
-    return (
-      <MyComponent />
-    )
-  }
+export default function Example() {
+  const headerRef = useRef()
+  const bodyRef = useRef()
+
+  useSyncScroll([headerRef, bodyRef])
+
+  return (
+    <div className="table">
+      <div ref={headerRef} className="table-header">
+          ...
+      </div>
+      <div ref={bodyRef} className="table-body">
+        ...
+      </div>
+    </div>
+  )
 }
 ```
 
