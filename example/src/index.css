@@ -3,3 +3,42 @@ body {
   padding: 0;
   font-family: sans-serif;
 }
+
+.table {
+  width: 1000px;
+}
+
+.cell {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 50px;
+}
+
+.table-header {
+  display: grid;
+  grid-template-columns: repeat(5, 500px);
+  overflow: scroll;
+  background: #638df1;
+  color: white;
+}
+
+.table-header .cell {
+  border-right: 1px solid #6a6ac5;
+}
+
+.separator {
+  padding: 20px;
+  text-align: center;
+}
+
+.table-body {
+  display: grid;
+  grid-template-columns: repeat(5, 500px);
+  overflow: scroll;
+  background: whitesmoke;
+}
+
+.table-body .cell {
+  border-bottom: 1px solid grey;
+}
