@@ -24,7 +24,7 @@ export default function useSyncScroll(scrollContainerRefList) {
     // We use this activeContainer state to keep track of which container originally scrolled.
     let activeContainer
 
-    function syncContainersScroll(scrolledContainer) {
+    function applyScrollSync(scrolledContainer) {
       const containersToUpdate = containerList.filter(container => container !== scrolledContainer)
 
       // Update scroll position of all other containers
@@ -35,8 +35,7 @@ export default function useSyncScroll(scrollContainerRefList) {
       })
     }
 
-    function onScroll(e) {
-      const currentlyScrolledContainer = e.target
+    function updateScrollPositions(currentlyScrolledContainer) {
       if (!activeContainer) {
         activeContainer = currentlyScrolledContainer
       }
@@ -44,7 +43,7 @@ export default function useSyncScroll(scrollContainerRefList) {
       // Ignore scroll events in other containers since they
       // are very likely to be artificially triggered.
       if (currentlyScrolledContainer === activeContainer) {
-        syncContainersScroll(activeContainer)
+        applyScrollSync(activeContainer)
 
         // Delay the removal of the active container.
         if (timeoutId) {
@@ -60,6 +59,11 @@ export default function useSyncScroll(scrollContainerRefList) {
           activeContainer = undefined
         }, 200)
       }
+    }
+
+    function onScroll(e) {
+      const currentlyScrolledContainer = e.target
+      updateScrollPositions(currentlyScrolledContainer)
     }
 
     function removeScrollListeners() {
@@ -80,6 +84,21 @@ export default function useSyncScroll(scrollContainerRefList) {
 
     addScrollListeners()
 
+    const firstContainer = getFirstContainer(scrollContainerRefList)
+    if (firstContainer) {
+      // Update all the scroll positions based on the one of the first container
+      // each time the component re-renders it's content.
+      updateScrollPositions(firstContainer)
+    }
+
     return removeScrollListeners
-  }, [scrollContainerRefList])
+  } /** No dependencies, we want to run the effect each time the component renders */)
+}
+
+function getFirstContainer(scrollContainerRefList) {
+  if (!scrollContainerRefList || !scrollContainerRefList.length) {
+    return null
+  }
+
+  return scrollContainerRefList[0].current
 }
